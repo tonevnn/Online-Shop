@@ -1,0 +1,98 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var categories = ViewData["categories"] as IEnumerable<CategoryView>;
+    var productlist = ViewData["productlist"] as List<ProductView>;
+}
+<div id="content">
+    <div id="content-left">
+        <ul>
+            <a href="dashboard.html">
+            <li>Dashboard</li></a>
+            <a href="order.html">
+            <li>Orders</li></a>
+            <a href="product.html">
+            <li>Products</li></a>
+            <a href="#">
+            <li>Customers</li></a>
+        </ul>
+    </div>
+    <div id="content-right">
+        <div class="path-admin">PRODUCTS LIST</b></div>
+        <div class="content-main">
+            <div id="content-main-dashboard">
+                <div id="product-title-header">
+                    <div id="product-title-1" style="width: 25%;">
+                        <b>Filter by Catetory:</b>
+                        <form>
+                            <select name="ddlCategory">
+                                @foreach (var item in categories)
+                               {
+                                   <option value="@item.CategoryId">@item.CategoryName</option>
+                               }
+                            </select>
+                            <input type="submit" value="Filter">
+                        </form>
+                    </div>
+                    <div id="product-title-2" style="width: 55%;">
+                        <form>
+                            <input type="text" name="txtSearch" placeholder="Enter product name to search" />
+                            <input type="submit" value="Search"
+                        </form>
+                    </div>
+                    <div id="product-title-3" style="width: 20%;">
+                        <a asp-action="Create_product">Create a new Product</a>
+                        <form action="">
+                            <label for="upload-file">Import .xls or .xlsx file</label>
+                            <input type="file" name="file" id="upload-file" />
+                        </form>
+                    </div>
+                </div>
+                <div id="order-table-admin">
+                    <table id="orders">
+                        <tr>
+                            <th>ProductID</th>
+                            <th>ProductName</th>
+                            <th>UnitPrice</th>
+                            <th>Unit</th>
+                            <th>UnitsInStock</th>
+                            <th>Category</th>
+                            <th>Discontinued</th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in productlist)
+                        {
+                            <tr>
+                                <td>@item.ProductId</td>
+                                <td>@item.ProductName</td>
+                                <td>@item.UnitPrice</td>
+                                <td>pieces</td>
+                                <td>@item.UnitsInStock</td>
+                                <td>@item.CategoryName</td>
+                                <td>@item.Discontinued</td>
+                                <td>
+                                    <a asp-action="Edit_product" asp-route-id="@item.ProductId">Edit</a> &nbsp; | &nbsp;
+                                    <a asp-action="Product" asp-route-id="@item.ProductId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                <div id="paging">
+                    <div class="pagination">
+                        <a href="#">&laquo;</a>
+                        <a href="#">1</a>
+                        <a href="#" class="active">2</a>
+                        <a href="#">3</a>
+                        <a href="#">4</a>
+                        <a href="#">5</a>
+                        <a href="#">6</a>
+                        <a href="#">&raquo;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

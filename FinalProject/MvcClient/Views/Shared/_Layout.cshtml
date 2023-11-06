@@ -1,0 +1,78 @@
+﻿@using Newtonsoft.Json
+@{
+    var cart = Context.Session.GetString("Cart");
+    var token = Context.Session.GetString("token");
+    var isAdmin = Context.Session.GetString("isAdmin");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MvcClient</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MvcClient.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container">
+        @if (isAdmin != null && isAdmin.Equals("true"))
+        {
+            <div id="header">
+                <div id="logo-admin">
+                    Ecommerce Admin
+                </div>
+                <div id="banner-admin">
+                    <ul>
+                        <li><a asp-controller="Permission" asp-action="Login">SignOut</a></li>
+                    </ul>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div id="header">
+                <div id="logo">
+                    <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/logo.png" /></a>
+                </div>
+                <div id="banner">
+                    <ul>
+                        <li><a asp-controller="Cart" asp-action="CustomerCart">Cart: @(cart != null ? JsonConvert.DeserializeObject<List<CartItemView>>(cart).Count : 0)</a></li>
+                        @if (token != null)
+                        {
+                            <li><a asp-action="Info" asp-controller="Customer">Profile</a></li>
+                            <li><a asp-controller="Permission" asp-action="Login">SignOut</a></li>
+                        }
+                        else
+                        {
+                            <li><a asp-controller="Permission" asp-action="Login">SignIn</a></li>
+                            <li><a asp-action="Register" asp-controller="Permission">SignUp</a></li>
+                        }
+
+
+                    </ul>
+                </div>
+            </div>
+        }
+
+
+        <main role="main" class="pb-3">
+
+            @RenderBody()
+
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted" style="    position: inherit;">
+        <div class="container">
+            &copy; 2022 - MvcClient - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

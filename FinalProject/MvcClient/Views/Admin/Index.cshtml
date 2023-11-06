@@ -1,0 +1,99 @@
+﻿@model ProductSearchView
+@{
+    ViewData["Title"] = "Admin Page";
+    var categories = ViewData["categories"] as IEnumerable<CategoryView>;
+    var products = ViewData["products"] as IEnumerable<ProductView>;
+    if (ViewData["token"] != null)
+    {
+        <script>
+            var storTest = window['localStorage'];
+            storTest.setItem("accessToken", '@ViewData["token"]');
+        </script>
+    }
+}
+
+<div id="content">
+    <div id="content-left">
+        <ul>
+            <a asp-action="Dashboard" asp-controller="Admin">
+            <li>Dashboard</li></a>
+            <a asp-action="Order" asp-controller="Admin">
+            <li>Orders</li></a>
+            <a asp-action="Product" asp-controller="Admin">
+            <li>Products</li></a>
+            @*<a href="#">
+            <li>Customers</li></a>*@
+        </ul>
+    </div>
+    <div id="content-right">
+        <div class="path-admin">PRODUCTS LIST</b></div>
+        <div class="content-main">
+            <div id="content-main-dashboard">
+                <div id="product-title-header">
+                    <div id="product-title-1" style="width: 75%;">
+                        <b>Filter by Catetory:</b>
+                        <form asp-action="Product">
+                            <select onchange="this.form.submit();" asp-for="CategoryId">
+                                <option value="0">All</option>
+                                @foreach (var category in categories)
+                                {
+                                    <option value="@category.CategoryId">@category.CategoryName</option>
+                                }
+                            </select>
+                            <input onchange="this.form.submit();" asp-for="Search" placeholder="Enter product name to search" />
+                        </form>
+                    </div>
+                    <div id="product-title-3" style="width: 20%;">
+                        <a asp-controller="Admin" asp-action="Create">Create a new Product</a>
+                        <form action="">
+                            <label for="upload-file">Import .xls or .xlsx file</label>
+                            <input type="file" name="file" id="upload-file" />
+                        </form>
+                    </div>
+                </div>
+                <div id="order-table-admin">
+                    <table id="orders">
+                        <tr>
+                            <th>ProductID</th>
+                            <th>ProductName</th>
+                            <th>UnitPrice</th>
+                            <th>Unit</th>
+                            <th>UnitsInStock</th>
+                            <th>Category</th>
+                            <th>Discontinued</th>
+                            <th></th>
+                        </tr>
+                        @foreach (var product in products)
+                        {
+                            <tr>
+                                <td><a href="order-detail.html?id=@product.ProductId">#@product.ProductId</a></td>
+                                <td>@product.ProductName</td>
+                                <td>@product.UnitPrice</td>
+                                <td>pieces</td>
+                                <td>@product.UnitsInStock</td>
+                                <td>@product.CategoryName</td>
+                                <td>@product.Discontinued</td>
+                                <td>
+                                    <a asp-controller="Admin" asp-action="Update" asp-route-id="@product.ProductId">Edit</a> &nbsp; | &nbsp;
+                                    <a asp-controller="Admin" asp-action="DeleteProduct" asp-route-id="@product.ProductId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                @*<div id="paging">
+                    <div class="pagination">
+                        <a href="#">&laquo;</a>
+                        <a href="#">1</a>
+                        <a href="#" class="active">2</a>
+                        <a href="#">3</a>
+                        <a href="#">4</a>
+                        <a href="#">5</a>
+                        <a href="#">6</a>
+                        <a href="#">&raquo;</a>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</div>

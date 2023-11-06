@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    var categories = ViewData["categories"] as IEnumerable<CategoryView>;
+    var productsBestSale = ViewData["productsBestSale"] as List<ProductView>;
+    var productsHot = ViewData["productsHot"] as List<ProductView>;
+    var productsNew = ViewData["productsNew"] as List<ProductView>;
+    var getcategory = ViewData["getcategory"] as CategoryView;
+}
+
+<div id="content">
+    <div id="content-left">
+        <h3>CATEGORY</h3>
+        <ul>
+            <a asp-controller="Home" asp-action="Index">
+            <li>Home</li></a>
+            @foreach (var cate in categories)
+            {
+                <a asp-controller="Home" asp-action="Filter" asp-route-id="@cate.CategoryId">
+                <li>@cate.CategoryName</li></a>
+            }
+        </ul>
+    </div>
+    <div id="content-right">
+        <div class="path">@getcategory.CategoryName</b></div>
+        <div class="content-main row">
+            @foreach (var item in productsHot)
+            {
+                <div class="product col-md-12">
+                    <a asp-action="Detail" asp-route-id="@item.ProductId"><img src="/img/1.jpg" width="100%" /></a>
+                    <div class="name"><a asp-action="Detail" asp-route-id="@item.ProductId">@item.ProductName</a></div>
+                    <div class="price">@item.UnitPrice</div>
+                    <div><a asp-action="BuyNow" asp-route-id="@item.ProductId" asp-route-quantity="1" asp-controller="Cart">Buy now</a></div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
